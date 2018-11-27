@@ -1,0 +1,27 @@
+<plugin>
+    <extension
+            point="com.katalon.platform.extensions">
+        <point
+                id="alex.testplugin.SlackEventListenerInitializer"
+                extensionPointId="com.katalon.platform.api.extension.event"
+                implementationClass="alex.testplugin.SlackEventListenerInitializer">
+        </point>
+    </extension>
+    <extension
+            point="com.katalon.platform.extensions">
+        <point
+                id="alex.testplugin.SlackToolItemDescription"
+                extensionPointId="com.katalon.platform.api.extension.ui.toolbar"
+                implementationClass="alex.testplugin.SlackToolItemDescription">
+        </point>
+    </extension>
+    <extension
+            point="com.kms.katalon.preferences.PreferencePages">
+        <page
+                category="com.kms.katalon.composer.preferences.PluginPreferencePage"
+                class="alex.testplugin.SlackPreferencePage"
+                id="alex.testplugin.SlackPreferencePage"
+                name="Slack">
+        </page>
+    </extension>
+</plugin>

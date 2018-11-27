@@ -1,0 +1,8 @@
+#Intellj
+.idea/**
+
+#Eclipse
+bin/**
+
+#Maven
+target/**

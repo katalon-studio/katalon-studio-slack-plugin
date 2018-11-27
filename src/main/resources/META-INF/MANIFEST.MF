@@ -1,0 +1,13 @@
+Bundle-SymbolicName: alex.testplugin;singleton:=true
+Require-Bundle: com.katalon.platform,
+ org.eclipse.e4.core.di,
+ org.eclipse.e4.core.contexts,
+ org.eclipse.core.runtime,
+ org.eclipse.e4.core.services,
+ org.eclipse.osgi.services,
+ org.eclipse.e4.ui.di,
+ org.eclipse.swt,
+ org.eclipse.jface
+Bundle-ActivationPolicy: lazy
+Export-Package: alex.testplugin
+Bundle-ClassPath: .
