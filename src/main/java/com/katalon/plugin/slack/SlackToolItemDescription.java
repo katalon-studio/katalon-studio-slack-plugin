@@ -1,7 +1,7 @@
-package alex.testplugin;
+package com.katalon.plugin.slack;
 
-import com.katalon.platform.api.extension.ui.DialogUtil;
-import com.katalon.platform.api.extension.ui.toolbar.ToolItemDescription;
+import com.katalon.platform.api.util.DialogUtil;
+import com.katalon.platform.api.extension.ToolItemDescription;
 
 public class SlackToolItemDescription implements ToolItemDescription {
 
@@ -22,7 +22,7 @@ public class SlackToolItemDescription implements ToolItemDescription {
 
     @Override
     public void handleEvent() {
-        DialogUtil.openPreferencePage("alex.testplugin.SlackPreferencePage");
+        DialogUtil.openPreferencePage("com.katalon.plugin.slack.SlackPreferencePage");
     }
 
     @Override

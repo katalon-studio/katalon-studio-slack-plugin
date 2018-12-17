@@ -1,4 +1,4 @@
-Bundle-SymbolicName: alex.testplugin;singleton:=true
+Bundle-SymbolicName: com.katalon.katalon-studio-slack-plugin;singleton:=true
 Require-Bundle: com.katalon.platform,
  org.eclipse.e4.core.di,
  org.eclipse.e4.core.contexts,
@@ -11,3 +11,6 @@ Require-Bundle: com.katalon.platform,
 Bundle-ActivationPolicy: lazy
 Export-Package: alex.testplugin
 Bundle-ClassPath: .
+Bundle-Version: 1.0
+Bundle-Vendor: Katalon LLC
+Bundle-Name: Katalon Studio Slack Plugin

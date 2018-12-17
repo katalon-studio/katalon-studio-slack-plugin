@@ -1,8 +1,11 @@
 #Intellj
-.idea/**
+.idea/
 
 #Eclipse
-bin/**
+bin/
+.project
+.classpath
+.settings/
 
 #Maven
-target/**
+target/

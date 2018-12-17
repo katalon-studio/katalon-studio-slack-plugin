@@ -1,4 +1,4 @@
-package alex.testplugin;
+package com.katalon.plugin.slack;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
@@ -16,11 +16,12 @@ import java.io.IOException;
 public class SlackPreferencePage extends PreferencePage {
 
     private Button chckEnableIntegration;
+
     private Group grpAuthentication;
+
     private Text txtToken;
+
     private Text txtChannel;
-    private Text txtBotName;
-    private Button chckPostAsAuthenticatedUser;
 
     @Override
     protected Control createContents(Composite composite) {
@@ -54,24 +55,6 @@ public class SlackPreferencePage extends PreferencePage {
         txtChannel = new Text(grpAuthentication, SWT.BORDER);
         txtChannel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-//        chckPostAsAuthenticatedUser = new Button(grpAuthentication, SWT.CHECK);
-//        chckPostAsAuthenticatedUser.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
-//        chckPostAsAuthenticatedUser.setText("Post the message as the authenticated user");
-
-        Composite cpstBotName = new Composite(grpAuthentication, SWT.NONE);
-        cpstBotName.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
-        GridLayout glBotName = new GridLayout(2, false);
-        glBotName.marginWidth = 0;
-        glBotName.horizontalSpacing = 15;
-        cpstBotName.setLayout(glBotName);
-
-        Label lblBotName = new Label(cpstBotName, SWT.NONE);
-        lblBotName.setText("Bot Username 123");
-        lblBotName.setLayoutData(gdLabel);
-
-        txtBotName = new Text(cpstBotName, SWT.BORDER);
-        txtBotName.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
         handleControlModifyEventListeners();
         initializeInput();
 
@@ -91,10 +74,9 @@ public class SlackPreferencePage extends PreferencePage {
     protected void performApply() {
         IPreferenceStore store = getPreferenceStore();
 
-        store.setValue("isSlackEnabled", chckEnableIntegration.getSelection());
-        store.setValue("authentication.token", txtToken.getText());
-        store.setValue("authentication.channel", txtChannel.getText());
-        store.setValue("authentication.botName", txtBotName.getText());
+        store.setValue(SlackConstants.PREF_IS_SLACK_ENABLED, chckEnableIntegration.getSelection());
+        store.setValue(SlackConstants.PREF_AUTH_TOKEN, txtToken.getText());
+        store.setValue(SlackConstants.PREF_AUTH_CHANNEL, txtChannel.getText());
 
         if (store.needsSaving()) {
             IPersistentPreferenceStore persistentPreferenceStore = (IPersistentPreferenceStore) store;
@@ -111,11 +93,10 @@ public class SlackPreferencePage extends PreferencePage {
     private void initializeInput() {
         IPreferenceStore store = getPreferenceStore();
 
-        chckEnableIntegration.setSelection(store.getBoolean("isSlackEnabled"));
+        chckEnableIntegration.setSelection(store.getBoolean(SlackConstants.PREF_IS_SLACK_ENABLED));
         chckEnableIntegration.notifyListeners(SWT.Selection, new Event());
 
-        txtToken.setText(store.getString("authentication.token"));
-        txtChannel.setText(store.getString("authentication.channel"));
-        txtBotName.setText(store.getString("authentication.botName"));
+        txtToken.setText(store.getString(SlackConstants.PREF_AUTH_TOKEN));
+        txtChannel.setText(store.getString(SlackConstants.PREF_AUTH_CHANNEL));
     }
 }
