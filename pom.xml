@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>com.katalon</groupId>
-	<artifactId>katalon-studio-slack-plugin</artifactId>
+	<artifactId>slack-integration</artifactId>
 	<version>1.0</version>
 	<packaging>bundle</packaging>
 
