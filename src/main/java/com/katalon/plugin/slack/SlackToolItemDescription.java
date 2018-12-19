@@ -12,12 +12,12 @@ public class SlackToolItemDescription implements ToolItemDescription {
 
     @Override
     public String toolItemId() {
-        return "alex.plugin.slackToolItem";
+        return SlackConstants.PLUGIN_ID + ".slackToolItem";
     }
 
     @Override
     public String iconUrl() {
-        return "platform:/plugin/alex.testplugin/icons/slack_32x24.png";
+        return "platform:/plugin/"+ SlackConstants.PLUGIN_ID + "/icons/slack_32x24.png";
     }
 
     @Override
