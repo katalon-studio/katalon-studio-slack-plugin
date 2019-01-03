@@ -12,7 +12,7 @@ Build
 `mvn clean install`
 
 #### How to test in Katalon Studio
-- Checkout or get a build of branch `demo_new_platform` of KS
+- Checkout or get a build of branch `staging-plugin` of KS
 - After KS opens, please click on `Plugin` menu, select `Install Plugin` and choose the generated jar file.
 - Click on `Slack` item on KS main toolbar to configure your slack preferences.
 - Execute a test suite and wait for a summary message after the execute completes.

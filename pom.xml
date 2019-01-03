@@ -10,16 +10,21 @@
 		<version>1.0.2</version>
 	</parent>
 
-	<version>1.0.2</version>
+	<groupId>com.katalon</groupId>
 	<artifactId>katalon-studio-slack-plugin</artifactId>
+	<version>1.0.2</version>
+
 	<packaging>bundle</packaging>
 
 	<dependencies>
+		<!-- Katalon Platform dependencies-->
 		<dependency>
 			<groupId>com.katalon</groupId>
 			<artifactId>com.katalon.platform</artifactId>
 			<version>1.0.2</version>
 		</dependency>
+
+		<!-- Slack plugin's dependencies-->
 		<dependency>
 			<groupId>com.github.seratch</groupId>
 			<artifactId>jslack</artifactId>
@@ -62,11 +67,13 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
-						<Export-Package>com.katalon.plugin.slack*</Export-Package>
 						<Import-Package></Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 						<_noee>true</_noee>
 						<_nouse>true</_nouse>
+
+						<!-- Change your public package here -->
+						<Export-Package>com.katalon.plugin.slack*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
