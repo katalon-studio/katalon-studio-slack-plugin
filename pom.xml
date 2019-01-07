@@ -7,24 +7,34 @@
 	<parent>
 		<groupId>com.katalon</groupId>
 		<artifactId>com.katalon.platform.parent</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.2</version>
 	</parent>
 
 	<groupId>com.katalon</groupId>
-	<artifactId>slack-integration</artifactId>
-	<version>1.0</version>
+	<artifactId>katalon-studio-slack-plugin</artifactId>
+	<version>1.0.2</version>
+
 	<packaging>bundle</packaging>
 
 	<dependencies>
+		<!-- Katalon Platform dependencies-->
 		<dependency>
 			<groupId>com.katalon</groupId>
 			<artifactId>com.katalon.platform</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.2</version>
 		</dependency>
+
+		<!-- Slack plugin's dependencies-->
 		<dependency>
 			<groupId>com.github.seratch</groupId>
 			<artifactId>jslack</artifactId>
 			<version>1.1.6</version>
+			<exclusions>
+				<exclusion>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -55,13 +65,30 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>com.katalon.plugin.slack*</Export-Package>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package></Import-Package>
-						<_include>src/main/resources/META-INF/MANIFEST.MF</_include>
+						<DynamicImport-Package>*</DynamicImport-Package>
 						<_noee>true</_noee>
+						<_nouse>true</_nouse>
+
+						<!-- Change your public package here -->
+						<Export-Package>com.katalon.plugin.slack*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>release</id>
+		</profile>
+	</profiles>
 </project>
