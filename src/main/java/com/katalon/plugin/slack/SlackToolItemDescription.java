@@ -1,7 +1,8 @@
 package com.katalon.plugin.slack;
 
-import com.katalon.platform.api.util.DialogUtil;
 import com.katalon.platform.api.extension.ToolItemDescription;
+import com.katalon.platform.api.service.ApplicationManager;
+import com.katalon.platform.api.ui.DialogActionService;
 
 public class SlackToolItemDescription implements ToolItemDescription {
 
@@ -17,12 +18,13 @@ public class SlackToolItemDescription implements ToolItemDescription {
 
     @Override
     public String iconUrl() {
-        return "platform:/plugin/"+ SlackConstants.PLUGIN_ID + "/icons/slack_32x24.png";
+        return "platform:/plugin/" + SlackConstants.PLUGIN_ID + "/icons/slack_32x24.png";
     }
 
     @Override
     public void handleEvent() {
-        DialogUtil.openPreferencePage("com.katalon.plugin.slack.SlackPreferencePage");
+        ApplicationManager.getInstance().getUIServiceManager().getService(DialogActionService.class).openPluginPreferencePage(
+                SlackConstants.PREF_PAGE_ID);
     }
 
     @Override
