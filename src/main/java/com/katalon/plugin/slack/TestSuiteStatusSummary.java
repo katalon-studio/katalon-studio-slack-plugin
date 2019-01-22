@@ -34,6 +34,10 @@ public class TestSuiteStatusSummary {
         return totalSkipped;
     }
 
+    public int getTotalTestCases() {
+        return totalPasses + totalFailures + totalErrors + totalSkipped;
+    }
+
     public static TestSuiteStatusSummary of(TestSuiteExecutionContext testSuiteContext) {
         TestSuiteStatusSummary summary = new TestSuiteStatusSummary();
 

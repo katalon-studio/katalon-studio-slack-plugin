@@ -41,9 +41,11 @@ public class SlackEventListenerInitializer implements EventListenerInitializer, 
                     TestSuiteStatusSummary testSuiteSummary = TestSuiteStatusSummary.of(testSuiteContext);
                     shortcut.post(ChannelName.of(channel),
                             "Summary execution result of test suite: " + testSuiteContext.getSourceId()
+                                    + "\n Total test case: " + Integer.toString(testSuiteSummary.getTotalPasses())
                                     + "\nTotal passes: " + Integer.toString(testSuiteSummary.getTotalPasses())
                                     + "\nTotal failures: " + Integer.toString(testSuiteSummary.getTotalFailures())
-                                    + "\nTotal errors: " + Integer.toString(testSuiteSummary.getTotalErrors()));
+                                    + "\nTotal errors: " + Integer.toString(testSuiteSummary.getTotalErrors())
+                                    + "\nTotal skipped: " + Integer.toString(testSuiteSummary.getTotalSkipped()));
                 }
             } catch (ResourceException | IOException | SlackApiException e) {
                 e.printStackTrace(System.out);

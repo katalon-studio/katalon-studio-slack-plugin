@@ -17,26 +17,30 @@
 	<packaging>bundle</packaging>
 
 	<dependencies>
-		<!-- Katalon Platform dependencies-->
+		<!-- Katalon Platform dependencies -->
 		<dependency>
 			<groupId>com.katalon</groupId>
 			<artifactId>com.katalon.platform</artifactId>
 			<version>1.0.5</version>
 		</dependency>
 
-		<!-- Slack plugin's dependencies-->
+		<!-- Slack plugin's dependencies -->
 		<dependency>
 			<groupId>com.github.seratch</groupId>
 			<artifactId>jslack</artifactId>
 			<version>1.1.6</version>
 			<exclusions>
 				<exclusion>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 	</dependencies>
+
+	<properties>
+		<export.packages>${export.package}*;version=${unpack.version}</export.packages>
+	</properties>
 
 	<build>
 		<plugins>
