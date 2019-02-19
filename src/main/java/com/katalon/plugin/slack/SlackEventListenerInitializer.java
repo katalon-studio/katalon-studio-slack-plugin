@@ -39,7 +39,7 @@ public class SlackEventListenerInitializer implements EventListenerInitializer, 
                     TestSuiteExecutionContext testSuiteContext = (TestSuiteExecutionContext) eventObject
                             .getExecutionContext();
                     TestSuiteStatusSummary testSuiteSummary = TestSuiteStatusSummary.of(testSuiteContext);
-                    shortcut.post(ChannelName.of(channel),
+                    shortcut.postAsBot(ChannelName.of(channel),
                             "Summary execution result of test suite: " + testSuiteContext.getSourceId()
                                     + "\nTotal test cases: " + Integer.toString(testSuiteSummary.getTotalTestCases())
                                     + "\nTotal passes: " + Integer.toString(testSuiteSummary.getTotalPasses())

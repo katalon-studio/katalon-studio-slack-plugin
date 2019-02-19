@@ -103,7 +103,7 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
                 Slack slack = Slack.getInstance();
                 ApiToken apiToken = ApiToken.of(token);
                 Shortcut shortcut = slack.shortcut(apiToken);
-                shortcut.post(ChannelName.of(channel), "This is a test message from Katalon Studio using Slack Plugin");
+                shortcut.postAsBot(ChannelName.of(channel), "This is a test message from Katalon Studio using Slack Plugin");
                 syncExec(() -> {
                     lblConnectionStatus
                             .setForeground(lblConnectionStatus.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
