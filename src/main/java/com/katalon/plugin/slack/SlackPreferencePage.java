@@ -107,7 +107,7 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
                 syncExec(() -> {
                     lblConnectionStatus
                             .setForeground(lblConnectionStatus.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
-                    lblConnectionStatus.setText("Connection successful");
+                    lblConnectionStatus.setText("Connection success");
                 });
             } catch (Exception e) {
                 syncExec(() -> {
@@ -154,6 +154,17 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
 
     @Override
     protected void performApply() {
+        if (saveSettings()) {
+            super.performApply();
+        }
+        
+    }
+    
+    @Override
+    public boolean performOk() {
+        if (!isControlCreated()) {
+            return true;
+        }
         try {
             PluginPreference pluginStore = getPluginStore();
 
@@ -162,10 +173,10 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
             pluginStore.setString(SlackConstants.PREF_AUTH_CHANNEL, txtChannel.getText());
 
             pluginStore.save();
-
-            super.performApply();
+            return true;
         } catch (ResourceException e) {
             MessageDialog.openWarning(getShell(), "Warning", "Unable to update Slack Integration Settings.");
+            return false;
         }
     }
 
