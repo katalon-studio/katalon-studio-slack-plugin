@@ -153,14 +153,6 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
     }
 
     @Override
-    protected void performApply() {
-        if (saveSettings()) {
-            super.performApply();
-        }
-        
-    }
-    
-    @Override
     public boolean performOk() {
         if (!isControlCreated()) {
             return true;
