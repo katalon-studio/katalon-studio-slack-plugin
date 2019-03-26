@@ -1,14 +1,7 @@
 package com.katalon.plugin.slack;
 
-import java.io.IOException;
-
 import org.osgi.service.event.Event;
 
-import com.github.seratch.jslack.Slack;
-import com.github.seratch.jslack.api.methods.SlackApiException;
-import com.github.seratch.jslack.shortcut.Shortcut;
-import com.github.seratch.jslack.shortcut.model.ApiToken;
-import com.github.seratch.jslack.shortcut.model.ChannelName;
 import com.katalon.platform.api.event.EventListener;
 import com.katalon.platform.api.event.ExecutionEvent;
 import com.katalon.platform.api.exception.ResourceException;
@@ -32,25 +25,23 @@ public class SlackEventListenerInitializer implements EventListenerInitializer, 
 
                 if (ExecutionEvent.TEST_SUITE_FINISHED_EVENT.equals(event.getTopic())) {
                     ExecutionEvent eventObject = (ExecutionEvent) event.getProperty("org.eclipse.e4.data");
-                    Slack slack = Slack.getInstance();
-                    ApiToken token = ApiToken.of(authToken);
-                    Shortcut shortcut = slack.shortcut(token);
 
                     TestSuiteExecutionContext testSuiteContext = (TestSuiteExecutionContext) eventObject
                             .getExecutionContext();
                     TestSuiteStatusSummary testSuiteSummary = TestSuiteStatusSummary.of(testSuiteContext);
                     System.out.println("Slack: Start sending summary message to channel: " + channel);
-                    shortcut.postAsBot(ChannelName.of(channel),
-                            "Summary execution result of test suite: " + testSuiteContext.getSourceId()
-                                    + "\nTotal test cases: " + Integer.toString(testSuiteSummary.getTotalTestCases())
-                                    + "\nTotal passes: " + Integer.toString(testSuiteSummary.getTotalPasses())
-                                    + "\nTotal failures: " + Integer.toString(testSuiteSummary.getTotalFailures())
-                                    + "\nTotal errors: " + Integer.toString(testSuiteSummary.getTotalErrors())
-                                    + "\nTotal skipped: " + Integer.toString(testSuiteSummary.getTotalSkipped()));
+                    String message = "Summary execution result of test suite: " + testSuiteContext.getSourceId()
+                            + "\nTotal test cases: " + Integer.toString(testSuiteSummary.getTotalTestCases())
+                            + "\nTotal passes: " + Integer.toString(testSuiteSummary.getTotalPasses())
+                            + "\nTotal failures: " + Integer.toString(testSuiteSummary.getTotalFailures())
+                            + "\nTotal errors: " + Integer.toString(testSuiteSummary.getTotalErrors())
+                            + "\nTotal skipped: " + Integer.toString(testSuiteSummary.getTotalSkipped());
+                    SlackUtil.sendMessage(authToken, channel, message);
+
                     System.out.println("Slack: Summary message has been successfully sent");
                 }
-            } catch (ResourceException | IOException | SlackApiException e) {
-                e.printStackTrace(System.out);
+            } catch (ResourceException | SlackException e) {
+                e.printStackTrace(System.err);
             }
         });
     }

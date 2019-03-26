@@ -1,5 +1,6 @@
 package com.katalon.plugin.slack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -15,10 +16,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.github.seratch.jslack.Slack;
-import com.github.seratch.jslack.shortcut.Shortcut;
-import com.github.seratch.jslack.shortcut.model.ApiToken;
-import com.github.seratch.jslack.shortcut.model.ChannelName;
 import com.katalon.platform.api.exception.ResourceException;
 import com.katalon.platform.api.preference.PluginPreference;
 import com.katalon.platform.api.service.ApplicationManager;
@@ -100,20 +97,19 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
         lblConnectionStatus.setText("Connecting...");
         thread = new Thread(() -> {
             try {
-                Slack slack = Slack.getInstance();
-                ApiToken apiToken = ApiToken.of(token);
-                Shortcut shortcut = slack.shortcut(apiToken);
-                shortcut.postAsBot(ChannelName.of(channel), "This is a test message from Katalon Studio using Slack Plugin");
+                SlackUtil.sendMessage(token, channel, "This is a test message from Katalon Studio using Slack Plugin");
                 syncExec(() -> {
                     lblConnectionStatus
                             .setForeground(lblConnectionStatus.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
                     lblConnectionStatus.setText("Connection success");
                 });
             } catch (Exception e) {
+                e.printStackTrace(System.err);
                 syncExec(() -> {
                     lblConnectionStatus
                             .setForeground(lblConnectionStatus.getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
-                    lblConnectionStatus.setText("Connection failed");
+                    lblConnectionStatus
+                            .setText("Connection failed. Reason: " + StringUtils.defaultString(e.getMessage()));
                 });
             } finally {
                 syncExec(() -> btnTestConnection.setEnabled(true));
