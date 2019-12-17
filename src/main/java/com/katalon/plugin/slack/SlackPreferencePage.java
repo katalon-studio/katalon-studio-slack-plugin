@@ -31,6 +31,8 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
 
     private Text txtChannel;
 
+    private Text txtReport;
+
     private Composite container;
 
     private Button btnTestConnection;
@@ -66,11 +68,18 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
         txtToken.setLayoutData(gdTxtToken);
 
         Label lblChannel = new Label(grpAuthentication, SWT.NONE);
-        lblChannel.setText("Chanel/Group");
+        lblChannel.setText("Channel/Group");
         lblToken.setLayoutData(gdLabel);
 
         txtChannel = new Text(grpAuthentication, SWT.BORDER);
         txtChannel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+        Label lblReport = new Label(grpAuthentication, SWT.NONE);
+        lblReport.setText("Report Folder (empty = no upload)");
+        lblReport.setLayoutData(gdLabel);
+
+        txtReport = new Text(grpAuthentication, SWT.BORDER);
+        txtReport.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
         btnTestConnection = new Button(grpAuthentication, SWT.PUSH);
         btnTestConnection.setText("Test Connection");
@@ -159,6 +168,7 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
             pluginStore.setBoolean(SlackConstants.PREF_IS_SLACK_ENABLED, chckEnableIntegration.getSelection());
             pluginStore.setString(SlackConstants.PREF_AUTH_TOKEN, txtToken.getText());
             pluginStore.setString(SlackConstants.PREF_AUTH_CHANNEL, txtChannel.getText());
+            pluginStore.setString(SlackConstants.PREF_REPORT_DIR, txtReport.getText());
 
             pluginStore.save();
             return true;
@@ -177,6 +187,7 @@ public class SlackPreferencePage extends PreferencePage implements SlackComponen
 
             txtToken.setText(pluginStore.getString(SlackConstants.PREF_AUTH_TOKEN, ""));
             txtChannel.setText(pluginStore.getString(SlackConstants.PREF_AUTH_CHANNEL, ""));
+            txtReport.setText(pluginStore.getString(SlackConstants.PREF_REPORT_DIR, ""));
 
             container.layout(true, true);
         } catch (ResourceException e) {
