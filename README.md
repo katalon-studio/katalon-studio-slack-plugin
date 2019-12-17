@@ -21,7 +21,7 @@ Requirements:
 ![slack_item](/docs/images/slack_item.png)
 
 #### Slack Settings
-- Uncheck *Using Slack*, and enter your Slack [Authentication Token](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens) and a [channel](https://get.slack.help/hc/en-us/categories/200111606-Using-Slack#work-in-channels) name.
+- Uncheck *Using Slack*, and enter your Slack [Authentication Token](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens), a [channel](https://get.slack.help/hc/en-us/categories/200111606-Using-Slack#work-in-channels) name, and the location of your report directory (leave blank to only report test results summary)
 - Click the *Test Connection* to check your credentials. If everything is OK, a message should be sent to Slack.
 
 ![test_message](/docs/images/test_message.png)
@@ -31,3 +31,7 @@ Requirements:
 - Execute a test suite and wait for the execution finished, a summary message should be sent to your Slack channel.
 
 ![summary_message](/docs/images/summary_message.png)
+
+#### Report file upload
+- If you have generated reports with the report plug in, and you have indicated the location of your Reports folder in the Slack Integration settings, any report files (html, csv, or pdf) found under the ID for test suites executed will be uploaded to the same Slack channel.
+- this requires the *files:write:user* scope for your app.

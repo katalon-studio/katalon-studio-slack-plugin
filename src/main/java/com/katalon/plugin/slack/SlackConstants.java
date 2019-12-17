@@ -10,4 +10,6 @@ public interface SlackConstants {
     String PREF_AUTH_TOKEN = "authentication.token";
     
     String PREF_AUTH_CHANNEL = "authentication.channel";
+
+    String PREF_REPORT_DIR = "reports.directory";
 }

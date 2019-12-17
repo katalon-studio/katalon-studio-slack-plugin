@@ -1,5 +1,7 @@
 package com.katalon.plugin.slack;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -8,14 +10,19 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 
 import com.google.gson.stream.JsonReader;
 
@@ -40,6 +47,28 @@ public class SlackUtil {
                 throw new SlackException(errorMsg);
             }
         } catch (IOException | URISyntaxException e) {
+            throw new SlackException(e);
+        }
+    }
+
+    public static void sendFile(String token, String channel, String testSuiteSource, String testSuiteId, File file)
+            throws SlackException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost uploadFile = new HttpPost("https://slack.com/api/files.upload");
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        String filetype = FilenameUtils.getExtension(file.getName());
+        try {
+            builder.addBinaryBody("file", new FileInputStream(file), ContentType.APPLICATION_OCTET_STREAM, file.getName());
+            builder.addPart("token", new StringBody(token, ContentType.APPLICATION_FORM_URLENCODED));
+            builder.addPart("channels", new StringBody(channel, ContentType.APPLICATION_FORM_URLENCODED));
+            builder.addPart("filetype", new StringBody(filetype, ContentType.APPLICATION_FORM_URLENCODED));
+            builder.addPart("title", new StringBody("Execution Result From: " + testSuiteSource + " " + testSuiteId, ContentType.APPLICATION_FORM_URLENCODED));
+            HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            CloseableHttpResponse response;
+            response = httpClient.execute(uploadFile);
+            HttpEntity responseEntity = response.getEntity();
+        } catch (IOException e) {
             throw new SlackException(e);
         }
     }
