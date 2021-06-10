@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -32,7 +33,7 @@ public class SlackUtil {
      */
     public static void sendMessage(String token, String channel, String msg) throws SlackException {
         try {
-            Map<String, Object> response = getResponseFromSendingMsg(buildSlackUri(token, channel, msg));
+            Map<String, Object> response = getResponseFromSendingMsg(buildSlackUri(channel, msg), token);
 
             boolean isOk = (boolean) response.get(RES_IS_OK);
             if (!isOk) {
@@ -44,6 +45,24 @@ public class SlackUtil {
         }
     }
 
+    /**
+     * Use the method below instead because <code>Slack API</code> changes the position of the token parameter to the header of the request, 
+     * which means <code>Slack API</code>'s method <code>chat.postMessage</code> using HTTP method <code>POST</code> to send request from the client. 
+     * So that, <code>Slack API</code> is no longer uses HTTP Method GET to call method <code>chat.postMessage</code>.
+     * @see #buildSlackUri(String, String)
+     */
+    @Deprecated
+    public static URI buildSlackUri(String token, String channel, String msg) throws URISyntaxException {
+        // scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
+        URIBuilder uriBuilder = new URIBuilder().setScheme("https")
+                .setHost("slack.com")
+                .setPath("/api/chat.postMessage")
+                .addParameter("token", token)
+                .addParameter("channel", channel);
+        uriBuilder.addParameter("text", msg);
+        return uriBuilder.build();
+    }
+    
     /**
      * Slack URI builder which will encode user info and message into URI
      * 
@@ -58,32 +77,47 @@ public class SlackUtil {
      * @see UnsupportedEncodingException
      * @see <a href="https://api.slack.com/web">Create Slack auth token</a>
      */
-    public static URI buildSlackUri(String token, String channel, String msg) throws URISyntaxException {
+    public static URI buildSlackUri(String channel, String msg) throws URISyntaxException {
         // scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
         URIBuilder uriBuilder = new URIBuilder().setScheme("https")
                 .setHost("slack.com")
                 .setPath("/api/chat.postMessage")
-                .addParameter("token", token)
-                .addParameter("channel", channel);
-        uriBuilder.addParameter("text", msg);
+                .addParameter("channel", channel)
+                .addParameter("text", msg);
         return uriBuilder.build();
+    }
+
+    /**
+     * Use the method below instead because <code>Slack API</code> changes the position of the token parameter to the header of the request, 
+     * which means <code>Slack API</code>'s method <code>chat.postMessage</code> using HTTP method <code>POST</code> to send request from the client. 
+     * So that, <code>Slack API</code> is no longer uses HTTP Method GET to call method <code>chat.postMessage</code>.
+     * @see #getResponseFromSendingMsg(URI, String)
+     */
+    @Deprecated
+    public static Map<String, Object> getResponseFromSendingMsg(URI uri) throws ClientProtocolException, IOException {
+        return getResponseFromSendingMsg(uri, null);
     }
 
     /**
      * Get response data from sending message to Slack
      * 
-     * @param uri URI to send GET request
+     * @param uri URI to send POST request
+     * @param token OAuth token of Slack's App API
      * @return A Map object with 2 keys SlackUtil.RES_IS_OK and SlackUtil.RES_ERROR_MSG
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public static Map<String, Object> getResponseFromSendingMsg(URI uri) throws ClientProtocolException, IOException {
+    public static Map<String, Object> getResponseFromSendingMsg(URI uri, String token) throws ClientProtocolException, IOException {
         boolean isOk = false;
         String errorMsg = null;
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(uri);
-        CloseableHttpResponse response = httpclient.execute(httpget);
+        
+        HttpPost httpPost = new HttpPost(uri);
+        httpPost.addHeader(SlackConstants.OAUTH_TOKEN_HEADER_NAME, 
+                MessageFormat.format(SlackConstants.OAUTH_TOKEN_HEADER_VALUE, token));
+        
+        CloseableHttpResponse response = httpclient.execute(httpPost);
         try {
             HttpEntity entity = response.getEntity();
             if (entity != null) {

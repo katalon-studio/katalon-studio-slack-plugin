@@ -10,4 +10,8 @@ public interface SlackConstants {
     String PREF_AUTH_TOKEN = "authentication.token";
     
     String PREF_AUTH_CHANNEL = "authentication.channel";
+    
+    String OAUTH_TOKEN_HEADER_NAME = "Authorization";
+    
+    String OAUTH_TOKEN_HEADER_VALUE = "Bearer {0}";
 }
