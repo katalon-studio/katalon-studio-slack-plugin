@@ -1,10 +1,15 @@
 package com.katalon.plugin.slack;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+
 import com.katalon.platform.api.extension.ToolItemDescription;
 import com.katalon.platform.api.service.ApplicationManager;
 import com.katalon.platform.api.ui.DialogActionService;
 
 public class SlackToolItemDescription implements ToolItemDescription {
+
+    private static final Bundle BUNDLE = FrameworkUtil.getBundle(SlackToolItemDescription.class);
 
     @Override
     public String name() {
@@ -18,7 +23,8 @@ public class SlackToolItemDescription implements ToolItemDescription {
 
     @Override
     public String iconUrl() {
-        return "platform:/plugin/" + SlackConstants.PLUGIN_ID + "/icons/slack_32x24.png";
+        String iconPath = IconResolver.resolve(BUNDLE, "icons/slack_32x24.png", "icons-v2/slack.svg");
+        return "platform:/plugin/" + SlackConstants.PLUGIN_ID + "/" + iconPath;
     }
 
     @Override
