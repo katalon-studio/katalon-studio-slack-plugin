@@ -18,7 +18,7 @@ public class SlackToolItemDescription implements ToolItemDescription {
 
     @Override
     public String iconUrl() {
-        return "platform:/plugin/" + SlackConstants.PLUGIN_ID + "/icons/slack_32x24.png";
+        return "platform:/plugin/" + SlackConstants.PLUGIN_ID + "/icons-v2/slack.svg";
     }
 
     @Override
